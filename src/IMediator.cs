@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace TinyMediator;
 
+/// <summary>
+/// Represents an implementation of a minimal mediator pattern using TinyMediator.
+/// </summary>
 public interface IMediator
 {
     /// <summary>
@@ -13,5 +16,5 @@ public interface IMediator
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<TResponse> Send<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken);
+    Task<TResponse> Send<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default);
 }

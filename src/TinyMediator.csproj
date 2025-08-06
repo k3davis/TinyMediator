@@ -6,7 +6,7 @@
 	<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 
 	<PackageId>TinyMediator</PackageId>
-	<Version>0.1.0</Version>
+	<Version>1.0.0</Version>
 	<Authors>Kevin Davis</Authors>
 	<Description>Lightweight mediator implementation with source generator for DI registration.</Description>
 	<PackageTags>mediator;source-generator;roslyn;dependency-injection;CQRS</PackageTags>
@@ -29,14 +29,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0">
+	  <PrivateAssets>all</PrivateAssets>
+	</PackageReference>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
 	<None Include="../README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<!-- include the dll as an analyzer in the nupkg -->
+	<None Include="$(TargetPath)" Pack="true" PackagePath="analyzers/dotnet/cs" />
   </ItemGroup>
 
 </Project>
