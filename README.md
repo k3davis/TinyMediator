@@ -47,7 +47,7 @@ var response = await mediator.Send(new Ping());
 | `AddMediatorHandlers()`    | Partial method generated for DI registration        |
 
 ## Contributions
-There are many, more robust libraries out there that implement the mediator pattern. I made this library for the simplest use case and wanted source generation to automate registrations without using reflection. If this is generally useful to others I might be surprised, but any suggestions or contributions are welcome.
+There are many, more robust libraries out there that implement the Mediator pattern. I made this library for the simplest use case and wanted source generation to automate registrations without using reflection. If this is generally useful to others I might be surprised, but any suggestions or contributions are welcome.
 
 ## License
 MIT - Use, modify, and distribute it freely in open source and commercial projects.
