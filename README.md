@@ -26,7 +26,7 @@ public class PingHandler : IRequestHandler<Ping, Pong>
 ```
 2. Register Handlers Automatically
 
-Add this line (or equivalent) to your `Program.cs` and all of your `IMediator` implementations
+Add this line (or equivalent) to your `Program.cs` and all of your `IRequestHandler` implementations
 will be automatically registered from the generated source at compile-time.
 
 ```csharp
