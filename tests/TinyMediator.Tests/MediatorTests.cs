@@ -18,26 +18,22 @@ namespace TinyMediator.Tests
             Assert.Equal("Pong", response);
         }
 
-        // sample request and handler for testing
+        // sample requests and handlers for testing
         public class PingRequest { }
 
         public class PingHandler : IRequestHandler<PingRequest, string>
         {
             public Task<string> Handle(PingRequest request, CancellationToken c) => Task.FromResult("Pong");
         }
-    }
 
-    /*
-    public static partial class MediatorServiceCollectionExtensions
-    {
-        public static partial void RegisterMediatorCore(IServiceCollection services)
+        public class GenericRequest { }
+
+        public class GenericHandler : IRequestHandler<GenericRequest, bool>
         {
-            services.AddSingleton<IMediator>(provider =>
+            public Task<bool> Handle(GenericRequest request, CancellationToken c)
             {
-                var inner = new Mediator(provider);
-                return new LoggingMediator(inner);
-            });
+                throw new NotImplementedException();
+            }
         }
     }
-    */
 }

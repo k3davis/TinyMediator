@@ -4,12 +4,21 @@ using System.Threading.Tasks;
 namespace TinyMediator;
 
 /// <summary>
-/// Represents an implementation of a minimal mediator pattern using TinyMediator.
+/// A basic abstraction of the Mediator pattern.
 /// </summary>
 public interface IMediator
 {
     /// <summary>
-    /// Send the request to the mediator.
+    /// Send the request to the mediator with no response (fire-and-forget).
+    /// </summary>
+    /// <typeparam name="TRequest"></typeparam>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task Send<TRequest>(TRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Send the request to the mediator with a typed response.
     /// </summary>
     /// <typeparam name="TRequest"></typeparam>
     /// <typeparam name="TResponse"></typeparam>
