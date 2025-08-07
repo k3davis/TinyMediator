@@ -6,15 +6,23 @@
 	<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 
 	<PackageId>TinyMediator</PackageId>
-	<Version>1.0.0</Version>
+	<Version>1.1.0</Version>
+	<PackageReleaseNotes>
+	  - Added fire-and-forget (no return) abstraction
+	  - Packaging and readme fixes
+	</PackageReleaseNotes>
 	<Authors>Kevin Davis</Authors>
 	<Description>Lightweight mediator implementation with source generator for DI registration.</Description>
-	<PackageTags>mediator;source-generator;roslyn;dependency-injection;CQRS</PackageTags>
+	<PackageTags>mediator source-generator roslyn dependency-injection CQRS</PackageTags>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageIcon>icon.png</PackageIcon>
 	<RepositoryUrl>https://github.com/k3davis/TinyMediator</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageProjectUrl>https://github.com/k3davis/TinyMediator</PackageProjectUrl>
+	<Nullable>enable</Nullable>
 	<PublishRepositoryUrl>true</PublishRepositoryUrl>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<EmbedUntrackedSources>true</EmbedUntrackedSources>
 	<IncludeSymbols>true</IncludeSymbols>
@@ -38,6 +46,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
+	<None Include="../contrib/icon.png" Pack="true" PackagePath=""/>
 	<None Include="../README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
