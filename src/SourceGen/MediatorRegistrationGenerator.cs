@@ -100,7 +100,7 @@ public class MediatorRegistrationGenerator : IIncrementalGenerator
                         category: "TinyMediator",
                         DiagnosticSeverity.Info,
                         isEnabledByDefault: true),
-                    classes.FirstOrDefault()?.GetLocation() ?? Location.None);
+                    Location.None);
             }
             spc.ReportDiagnostic(report);
 

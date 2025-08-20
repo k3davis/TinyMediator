@@ -6,10 +6,9 @@
 	<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 
 	<PackageId>TinyMediator</PackageId>
-	<Version>1.1.0</Version>
+	<Version>1.1.1</Version>
 	<PackageReleaseNotes>
-	  - Added fire-and-forget (no return) abstraction
-	  - Packaging and readme fixes
+	  - Fix potentially misplaced Roslyn notification message in the source generator.
 	</PackageReleaseNotes>
 	<Authors>Kevin Davis</Authors>
 	<Description>Lightweight mediator implementation with source generator for DI registration.</Description>
