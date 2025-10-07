@@ -6,9 +6,10 @@
 	<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 
 	<PackageId>TinyMediator</PackageId>
-	<Version>1.1.1</Version>
+	<Version>1.1.2</Version>
 	<PackageReleaseNotes>
-	  - Fix potentially misplaced Roslyn notification message in the source generator.
+	  - Fix IMediator lifetime to avoid exception when implementations are marked as transient.
+	  - Update dependent packages.
 	</PackageReleaseNotes>
 	<Authors>Kevin Davis</Authors>
 	<Description>Lightweight mediator implementation with source generator for DI registration.</Description>
@@ -36,8 +37,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" />
-	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0">
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2">
 	  <PrivateAssets>all</PrivateAssets>
 	</PackageReference>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
@@ -45,7 +46,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
-	<None Include="../contrib/icon.png" Pack="true" PackagePath=""/>
+	<None Include="../contrib/icon.png" Pack="true" PackagePath="" />
 	<None Include="../README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
