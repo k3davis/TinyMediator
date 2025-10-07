@@ -128,7 +128,8 @@ public static class MediatorServiceCollectionExtensions
     /// </remarks>
     public static IServiceCollection AddTinyMediatorHandlers(this IServiceCollection services)
     {
-        services.AddScoped<IMediator, Mediator>();
+        // this is transient to handle implementations of any lifetime
+        services.AddTransient<IMediator, Mediator>();
 {{handlers}}
         return services;
     }
