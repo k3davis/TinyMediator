@@ -1,5 +1,7 @@
 ﻿# TinyMediator
 
+[![NuGet version (TinyMediator)](https://img.shields.io/nuget/v/TinyMediator.svg?style=flat-square)](https://www.nuget.org/packages/TinyMediator/)
+
 A lightweight implementation of the Mediator pattern—with built-in source generation for automatic handler registration. Designed for minimal boilerplate and fast compile-time discovery.
 
 ## Installation
