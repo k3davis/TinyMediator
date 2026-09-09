@@ -6,9 +6,8 @@
 	<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 
 	<PackageId>TinyMediator</PackageId>
-	<Version>1.1.2</Version>
+	<Version>1.1.3</Version>
 	<PackageReleaseNotes>
-	  - Fix IMediator lifetime to avoid exception when implementations are marked as transient.
 	  - Update dependent packages.
 	</PackageReleaseNotes>
 	<Authors>Kevin Davis</Authors>
@@ -37,11 +36,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
-	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2">
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12">
 	  <PrivateAssets>all</PrivateAssets>
 	</PackageReference>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.401">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
