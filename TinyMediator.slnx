@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/TinyMediator.csproj" />
+  <Project Path="tests/TinyMediator.Tests/TinyMediator.Tests.csproj" />
+</Solution>

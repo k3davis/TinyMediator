@@ -1,7 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using System.Linq;
 using System.Text;
 
 namespace TinyMediator.SourceGen;
@@ -11,75 +9,33 @@ public class MediatorRegistrationGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var classDeclarations = context.SyntaxProvider
-            .CreateSyntaxProvider(
-                predicate: static (s, _) => s is ClassDeclarationSyntax,
-                transform: static (ctx, _) => (ClassDeclarationSyntax)ctx.Node)
-            .Where(static cds => cds != null);
-
-        var combined = context.CompilationProvider.Combine(classDeclarations.Collect());
-
-        context.RegisterSourceOutput(combined, (spc, data) =>
+        context.RegisterSourceOutput(context.CompilationProvider, static (spc, compilation) =>
         {
-            int registrationCount = 0;
-            var (compilation, classes) = data;
+            var registrations = HandlerDiscovery.Find(compilation);
+            if (registrations is null) return; // TinyMediator core types aren't referenced by this compilation
 
-            // handler registration method
-            StringBuilder sb = new();
+            var sb = new StringBuilder();
 
-            foreach (var classDecl in classes)
+            foreach (var reg in registrations)
             {
-                var model = compilation.GetSemanticModel(classDecl.SyntaxTree);
-                if (model.GetDeclaredSymbol(classDecl) is not INamedTypeSymbol symbol || symbol.IsAbstract) continue;
-
-                var handlerInterface1 = compilation.GetTypeByMetadataName("TinyMediator.IRequestHandler`1");
-                var handlerInterface2 = compilation.GetTypeByMetadataName("TinyMediator.IRequestHandler`2");
-                if (handlerInterface1 == null && handlerInterface2 == null) return;
-
-                bool implementsHandler = symbol.Interfaces.Any(i =>
-                    SymbolEqualityComparer.Default.Equals(i.OriginalDefinition, handlerInterface1) ||
-                    SymbolEqualityComparer.Default.Equals(i.OriginalDefinition, handlerInterface2));
-
-                if (implementsHandler)
+                var lifetime = ExtractLifetimeFromAttribute(reg.LifetimeAttribute);
+                var registrationMethod = lifetime switch
                 {
-                    foreach (var iface in symbol.Interfaces)
-                    {
-                        var requestType = iface.TypeArguments[0].ToDisplayString();
-                        var handlerType = symbol.ToDisplayString();
+                    "Singleton" => "AddSingleton",
+                    "Transient" => "AddTransient",
+                    _ => "AddScoped"
+                };
 
-                        // detect lifetime attribute
-                        var lifetimeAttr = symbol.GetAttributes()
-                            .FirstOrDefault(a => a.AttributeClass?.Name == "HandlerLifetimeAttribute");
+                var requestType = reg.RequestType.ToDisplayString();
+                var handlerType = reg.HandlerType.ToDisplayString();
 
-                        string lifetime = ExtractLifetimeFromAttribute(lifetimeAttr);
-
-                        var registrationMethod = lifetime switch
-                        {
-                            "Singleton" => "AddSingleton",
-                            "Transient" => "AddTransient",
-                            _ => "AddScoped"
-                        };
-
-                        if (SymbolEqualityComparer.Default.Equals(iface.OriginalDefinition, handlerInterface1))
-                        {
-                            sb.AppendLine($"        services.{registrationMethod}<IRequestHandler<{requestType}>, {handlerType}>();");
-                            registrationCount++;
-                        }
-                        else if (SymbolEqualityComparer.Default.Equals(iface.OriginalDefinition, handlerInterface2))
-                        {
-                            var responseType = iface.TypeArguments[1].ToDisplayString();
-
-                            sb.AppendLine($"        services.{registrationMethod}<IRequestHandler<{requestType}, {responseType}>, {handlerType}>();");
-                            registrationCount++;
-                        }
-                    }
-                }
+                sb.AppendLine(reg.ResponseType is null
+                    ? $"        services.{registrationMethod}<IRequestHandler<{requestType}>, {handlerType}>();"
+                    : $"        services.{registrationMethod}<IRequestHandler<{requestType}, {reg.ResponseType.ToDisplayString()}>, {handlerType}>();");
             }
 
-            Diagnostic report;
-            if (registrationCount == 0)
-            {
-                report = Diagnostic.Create(
+            Diagnostic report = registrations.Count == 0
+                ? Diagnostic.Create(
                     new DiagnosticDescriptor(
                         id: "TM002",
                         title: "No Handlers Registered",
@@ -87,21 +43,17 @@ public class MediatorRegistrationGenerator : IIncrementalGenerator
                         category: "TinyMediator",
                         DiagnosticSeverity.Warning,
                         isEnabledByDefault: true),
-                    Location.None);
-            }
-            else
-            {
-                // vs seems to suppress this..?
-                report = Diagnostic.Create(
+                    Location.None)
+                : Diagnostic.Create(
                     new DiagnosticDescriptor(
                         id: "TM998",
                         title: "Handlers Registered",
-                        messageFormat: $"{registrationCount} handler implementations were registered.",
+                        messageFormat: $"{registrations.Count} handler implementations were registered.",
                         category: "TinyMediator",
                         DiagnosticSeverity.Info,
                         isEnabledByDefault: true),
                     Location.None);
-            }
+
             spc.ReportDiagnostic(report);
 
             string handlers = sb.ToString();
@@ -117,7 +69,8 @@ public static class MediatorServiceCollectionExtensions
     /// <summary>
     /// Registers all implementations of <see cref="IRequestHandler{TRequest,TResponse}"/> or
     /// <see cref="IRequestHandler{TRequest}"/> 
-    /// found in the current application domain as services in the dependency injection container.
+    /// found in the current compilation and its referenced assemblies as services in the
+    /// dependency injection container.
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the handlers to.</param>
     /// <returns>The same <see cref="IServiceCollection"/> instance for chaining.</returns>
