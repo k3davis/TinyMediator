@@ -9,7 +9,7 @@
 	<Version>1.1.4</Version>
 	<PackageReleaseNotes>
 	  - `AddTinyMediatorHandlers()` now discovers handlers in referenced assemblies, not just the current project.
-	  - Surface a build error on a request whose handler doesn't match the implemented handler.
+	  - Surface a build error when calling Send on a handler with a return type that doesn't match.
 	</PackageReleaseNotes>
 	<Authors>Kevin Davis</Authors>
 	<Description>Lightweight mediator implementation with source generator for DI registration.</Description>
